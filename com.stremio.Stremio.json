@@ -1,10 +1,11 @@
 {
   "app-id": "com.stremio.Stremio",
   "runtime": "org.kde.Platform",
-  "runtime-version": "5.12",
+  "runtime-version": "5.15",
   "sdk": "org.kde.Sdk",
+  "base": "io.qt.qtwebengine.BaseApp",
+  "base-version": "5.15",
   "command": "/app/opt/stremio/stremio",
-  "separate-locales": true,
   "finish-args": [
     "--share=ipc",
     "--share=network",
@@ -45,9 +46,15 @@
       "buildsystem": "qmake",
       "build-options": {
         "env": {
-          "LIBRARY_PATH": "/app/lib:/usr/lib"
+          "LIBRARY_PATH": "/app/lib:/usr/lib",
+          "QMAKEPATH": "/app/lib"
         }
       },
+      "config-opts": [
+        "QMAKE_INCDIR+=/app/include/QtWebEngine",
+        "QMAKE_INCDIR+=/app/include/QtWebEngineCore",
+        "QMAKE_INCDIR+=/app/include/QtWebEngineWidgets"
+      ],
       "post-install": [
         "install -Dm755 server.js /app/opt/stremio/server.js",
         "install -Dm644 com.stremio.Stremio.desktop /app/share/applications/com.stremio.Stremio.desktop",
