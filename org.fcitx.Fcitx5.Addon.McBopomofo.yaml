@@ -1,0 +1,38 @@
+app-id: org.fcitx.Fcitx5.Addon.Mcbopomofo
+branch: stable
+runtime: org.fcitx.Fcitx5
+runtime-version: stable
+sdk: org.kde.Sdk//5.15
+build-extension: true
+appstream-compose: false
+separate-locales: false
+build-options:
+  prefix: /app/addons/McBopomofo
+  prepend-pkg-config-path: /app/addons/McBopomofo/lib/pkgconfig
+  prepend-ld-library-path: /app/addons/McBopomofo/lib
+  ldflags: -L/app/addons/McBopomofo/lib
+  cflags: -I/app/addons/McBopomofo/include
+  cxxflags: -I/app/addons/McBopomofo/include
+
+cleanup:
+  - /include
+  - "*.la"
+  - "*.a"
+  - /lib/cmake
+  - /lib/pkgconfig
+  - /man
+modules:
+  - modules/fmt.yaml
+  - name: fcitx5-mcbopomofo
+    buildsystem: cmake
+    config-opts:
+      - -DENABLE_TEST=Off
+    # sources:
+      # - type: dir
+      #   path: ../..
+    sources:
+      - type: git
+        url: https://github.com/zonble/fcitx5-mcbopomofo.git
+        branch: master
+    post-install:
+      - appstream-compose --basename=org.fcitx.Fcitx5.Addon.Mcbopomofo --prefix=${FLATPAK_DEST} --origin=flatpak org.fcitx.Fcitx5.Addon.Mcbopomofo
